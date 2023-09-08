@@ -1,0 +1,17 @@
+# IDE
+.vscode
+.idea
+
+# BUILD
+**/target
+
+# DEPENDENCIES
+node_modules
+pnpm-lock.yaml
+
+# OTHER
+**/.next
+**/.vercel
+**/.swc
+**/.expo
+**/.turbo

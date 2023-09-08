@@ -1,15 +1,36 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+use std::sync::Arc;
+
+use tauri_rspc_prisma_core::{prisma::PrismaClient, Context};
+
+async fn migrate_and_populate(
+  client: &Arc<PrismaClient>,
+) -> Result<(), Box<dyn std::error::Error>> {
+  #[cfg(debug_assertions)]
+  client._db_push().await?;
+
+  #[cfg(not(debug_assertions))]
+  client._migrate_deploy().await.unwrap();
+
+  return Ok(());
 }
 
-fn main() {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+#[tokio::main]
+async fn main() {
+  let router = tauri_rspc_prisma_core::api::create_router();
+  let db = Arc::new(tauri_rspc_prisma_core::db::create_db().await.unwrap());
+
+  migrate_and_populate(&db).await.unwrap();
+
+  tauri::Builder::default()
+    .plugin(rspc::integrations::tauri::plugin(
+      router.arced(),
+      move || Context {
+        db: Arc::clone(&db),
+      },
+    ))
+    .run(tauri::generate_context!())
+    .expect("Error while running Tauri application!");
 }

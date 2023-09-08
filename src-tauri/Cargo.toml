@@ -1,9 +1,9 @@
 [package]
 name = "tauri-rspc-prisma"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
+description = "A Tauri + rspc + Prisma app."
+version = "0.1.0"
+authors = ["tomheaton"]
+license = "MIT"
 repository = ""
 edition = "2021"
 
@@ -16,6 +16,10 @@ tauri-build = { version = "1.4", features = [] }
 tauri = { version = "1.4", features = ["shell-open"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+tokio = { version = "1.32.0", features = ["full"] }
+prisma-client-rust = { workspace = true }
+rspc = { workspace = true, features = ["uuid", "tauri"] }
+tauri-rspc-prisma-core = { path = "../core" }
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
