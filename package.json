@@ -1,6 +1,6 @@
 {
   "name": "tauri-rspc-prisma",
-  "description": "A Tauri + rspc + Prisma app.",
+  "description": "A minimal Tauri + rspc + Prisma example app.",
   "version": "0.1.0",
   "license": "MIT",
   "author": "tomheaton",

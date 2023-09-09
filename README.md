@@ -1,6 +1,6 @@
 # Tauri + rspc + Prisma
 
-A Tauri + rspc + Prisma app.
+A minimal Tauri + rspc + Prisma example app.
 
 ## Setup
 
@@ -14,6 +14,10 @@ pnpm prisma:generate
 # Run the app
 pnpm tauri dev
 ```
+
+## Changes to make
+
+- Update `tauri-rspc-prisma` and `tauri_rspc_prisma` to your app name.
 
 ## Credits
 

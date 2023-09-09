@@ -1,10 +1,10 @@
 [package]
 name = "tauri-rspc-prisma"
-description = "A Tauri + rspc + Prisma app."
+description = "A minimal Tauri + rspc + Prisma example app."
 version = "0.1.0"
 authors = ["tomheaton"]
 license = "MIT"
-repository = ""
+repository = "https://github.com/tomheaton/tauri-rspc-prisma"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
