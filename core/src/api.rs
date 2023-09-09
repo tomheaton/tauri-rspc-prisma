@@ -1,30 +1,46 @@
 use std::path::PathBuf;
 
-use rspc::{Config, Router};
+use rspc::{Config, Router, Type};
+use serde::{Deserialize, Serialize};
 
 use crate::Context;
 
 pub fn create_router() -> Router<Context> {
-  let r = Router::<Context>::new()
+  return Router::<Context>::new()
     .config(
       Config::new()
         .set_ts_bindings_header("/* eslint-disable */")
-        .export_ts_bindings(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../src/types/bindings.ts")),
+        .export_ts_bindings(
+          PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../src/types/bindings.ts"),
+        ),
     )
-    .query("version", |t| t(|_, _: ()| env!("CARGO_PKG_VERSION")))
+    .query("version", |t| {
+      return t(|_, _: ()| env!("CARGO_PKG_VERSION"));
+    })
     .query("posts", |t| {
-      t(|ctx, _: ()| async move {
+      return t(|ctx, _: ()| async move {
         let posts = ctx.db.post().find_many(vec![]).exec().await?;
 
         return Ok(posts);
-      })
+      });
     })
-    // .mutation("createPost", |t| {
-    //   t(|ctx, _: ()| async move {
-    //     // let
-    //   })
-    // })
-    .build();
+    .mutation("createPost", |t| {
+      #[derive(Debug, Clone, Deserialize, Serialize, Type)]
+      struct CreatePostInput {
+        title: String,
+        content: String,
+      }
 
-  return r;
+      return t(|ctx, input: CreatePostInput| async move {
+        let post = ctx
+          .db
+          .post()
+          .create(input.title, input.content, vec![])
+          .exec()
+          .await?;
+
+        return Ok(post);
+      });
+    })
+    .build();
 }

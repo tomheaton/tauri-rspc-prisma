@@ -16,6 +16,10 @@ node_modules
 # Build files
 target
 dist
+build
+bin
+binaries
+out
 
 # Editor directories and files
 .vscode/*
