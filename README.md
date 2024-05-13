@@ -18,6 +18,7 @@ pnpm tauri dev
 ## Changes to make
 
 - Update `tauri-rspc-prisma` and `tauri_rspc_prisma` to your app name.
+- Update `dev.tomheaton.tauri-rspc-prisma` to your app identifier.
 
 ## Credits
 
