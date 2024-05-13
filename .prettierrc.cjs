@@ -1,4 +1,4 @@
-/** @type {import("prettier").Config} */
+/** @type {import("prettier").Config & import("prettier-plugin-tailwindcss").PluginOptions} */
 const config = {
   trailingComma: "all",
   tabWidth: 2,
@@ -8,7 +8,10 @@ const config = {
   bracketSpacing: true,
   printWidth: 80,
   endOfLine: "lf",
-  plugins: [require.resolve("prettier-plugin-tailwindcss")],
+  plugins: [
+    require.resolve("prettier-plugin-tailwindcss"),
+    require.resolve("prettier-plugin-organize-imports"),
+  ],
   tailwindConfig: "./tailwind.config.ts",
 };
 

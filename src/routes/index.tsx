@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from "react";
-import { api } from "../main";
+import { api } from "@/main";
+import { useState } from "react";
 
 export default function Index() {
   const { data: version } = api.useQuery(["version"]);
@@ -21,7 +21,7 @@ export default function Index() {
     },
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     createPostMutation.mutate({
@@ -36,7 +36,7 @@ export default function Index() {
         Tauri + rspc + Prisma
       </h1>
       <br />
-      <p>Version: {version}</p>
+      <p>Version: {version ?? "undefined"}</p>
       <br />
       <form
         className="flex w-full max-w-sm flex-col gap-y-4"
@@ -47,7 +47,7 @@ export default function Index() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="my title"
-          className="rounded px-2 py-1"
+          className="rounded px-2 py-1 border"
           required
         />
         <input
@@ -55,10 +55,16 @@ export default function Index() {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="my content"
-          className="rounded px-2 py-1"
+          className="rounded px-2 py-1 border"
           required
         />
-        <button type="submit">Create Post</button>
+        <button
+          type="submit"
+          className="rounded px-2 py-1 bg-blue-500 text-white"
+          disabled={createPostMutation.isLoading}
+        >
+          {createPostMutation.isLoading ? "Creating Post..." : "Create Post"}
+        </button>
       </form>
       <br />
       <div className="flex w-full max-w-sm flex-col gap-y-2">

@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "format": "prettier --write . && cargo fmt",
-    "prisma:generate": "cargo prisma generate"
+    "prisma:generate": "cargo prisma generate",
+    "clean": "rm -rf node_modules dist target src-tauri/target"
   },
   "dependencies": {
     "@rspc/client": "^0.1.3",
@@ -26,12 +27,14 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.4.0",
+    "@types/node": "^20.12.11",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.29",
     "prettier": "^3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.4",
     "prettier-plugin-tailwindcss": "^0.5.4",
     "prisma": "^5.2.0",
     "tailwindcss": "^3.3.3",
