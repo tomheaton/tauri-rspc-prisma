@@ -10,13 +10,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.4", features = [] }
+tauri-build = { version = "1.5.2", features = [] }
 
 [dependencies]
-tauri = { version = "1.4", features = ["shell-open"] }
+tauri = { version = "1.6.5", features = ["shell-open"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tokio = { version = "1.32.0", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
 prisma-client-rust = { workspace = true }
 rspc = { workspace = true, features = ["uuid", "tauri"] }
 tauri-rspc-prisma-core = { path = "../core" }
