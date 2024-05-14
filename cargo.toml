@@ -1,18 +1,3 @@
 [workspace]
 resolver = "2"
-members = ["src-tauri", "core", "crates/*"]
-
-[workspace.dependencies]
-prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", default-features = false, features = [
-  "migrations",
-  "rspc",
-  "sqlite",
-  "sqlite-create-many",
-] }
-prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", default-features = false, features = [
-  "migrations",
-  "rspc",
-  "sqlite",
-  "sqlite-create-many",
-] }
-rspc = { version = "0.1", feature = ["tauri"] }
+members = ["src-tauri", "prisma-cli"]

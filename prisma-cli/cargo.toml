@@ -1,0 +1,18 @@
+[package]
+name = "prisma-cli"
+version = "0.0.0"
+edition = "2021"
+
+[features]
+mocking = ["prisma-client-rust-cli/mocking"]
+specta = ["prisma-client-rust-cli/specta"]
+sqlite = [
+  "prisma-client-rust-cli/sqlite",
+  "prisma-client-rust-cli/sqlite-create-many",
+]
+
+[dependencies]
+prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", default-features = false, features = [
+  "migrations",
+  # "mutation-callbacks",
+] }

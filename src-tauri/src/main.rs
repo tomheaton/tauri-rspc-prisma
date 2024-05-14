@@ -3,34 +3,27 @@
 
 use std::sync::Arc;
 
-use tauri_rspc_prisma_core::{prisma::PrismaClient, Context};
+pub mod api;
+#[allow(warnings, unused)]
+pub mod prisma;
 
-async fn migrate_and_populate(
-  client: &Arc<PrismaClient>,
-) -> Result<(), Box<dyn std::error::Error>> {
-  #[cfg(debug_assertions)]
-  client._db_push().await?;
-
-  #[cfg(not(debug_assertions))]
-  client._migrate_deploy().await.unwrap();
-
-  return Ok(());
+#[derive(Debug, Clone)]
+pub struct Context {
+  pub db: Arc<prisma::PrismaClient>,
 }
 
 #[tokio::main]
 async fn main() {
-  let router = tauri_rspc_prisma_core::api::create_router();
-  let db = Arc::new(tauri_rspc_prisma_core::db::create_db().await.unwrap());
+  let router = api::create_router();
+  let db = prisma::new_client().await.unwrap();
 
-  migrate_and_populate(&db).await.unwrap();
+  #[cfg(debug_assertions)]
+  db._db_push().await.unwrap();
 
   tauri::Builder::default()
-    .plugin(rspc::integrations::tauri::plugin(
-      router.arced(),
-      move || Context {
-        db: Arc::clone(&db),
-      },
-    ))
+    .plugin(rspc_tauri::plugin(router.arced(), |_| Context {
+      db: Arc::new(db),
+    }))
     .run(tauri::generate_context!())
     .expect("Error while running Tauri application!");
 }

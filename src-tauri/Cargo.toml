@@ -17,9 +17,18 @@ tauri = { version = "1", features = ["shell-open"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tokio = { version = "1", features = ["full"] }
-prisma-client-rust = { workspace = true }
-rspc = { workspace = true, features = ["uuid", "tauri"] }
-tauri-rspc-prisma-core = { path = "../core" }
+prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", default-features = false, features = [
+  "migrations",
+  "mocking",
+  "rspc",
+  "specta",
+  "sqlite",
+  "sqlite-create-many",
+] }
+rspc = "0.2"
+rspc-tauri = "0"
+specta = "1"
+tauri-specta = { version = "1", features = ["typescript"] }
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

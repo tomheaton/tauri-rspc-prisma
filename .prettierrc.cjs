@@ -6,7 +6,7 @@ const config = {
   semi: true,
   singleQuote: false,
   bracketSpacing: true,
-  printWidth: 80,
+  printWidth: 100,
   endOfLine: "lf",
   plugins: [
     require.resolve("prettier-plugin-tailwindcss"),

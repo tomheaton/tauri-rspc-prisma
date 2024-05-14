@@ -31,3 +31,6 @@ out
 *.njsproj
 *.sln
 *.sw?
+
+# Prisma generated files
+src-tauri/src/prisma.rs
