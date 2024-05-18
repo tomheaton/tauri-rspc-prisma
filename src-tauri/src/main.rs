@@ -15,14 +15,14 @@ pub struct Context {
 #[tokio::main]
 async fn main() {
   let router = api::create_router();
-  let db = prisma::new_client().await.unwrap();
+  let db = Arc::new(prisma::new_client().await.unwrap());
 
   #[cfg(debug_assertions)]
   db._db_push().await.unwrap();
 
   tauri::Builder::default()
-    .plugin(rspc_tauri::plugin(router.arced(), |_| Context {
-      db: Arc::new(db),
+    .plugin(rspc_tauri::plugin(router.arced(), move |_| Context {
+      db: Arc::clone(&db),
     }))
     .run(tauri::generate_context!())
     .expect("Error while running Tauri application!");

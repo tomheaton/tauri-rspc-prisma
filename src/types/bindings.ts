@@ -9,6 +9,6 @@ export type Procedures = {
   subscriptions: never;
 };
 
-export type CreatePostInput = { title: string; content: string };
-
 export type Post = { id: number; title: string; content: string };
+
+export type CreatePostInput = { title: string; content: string };

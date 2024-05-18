@@ -34,3 +34,6 @@ out
 
 # Prisma generated files
 src-tauri/src/prisma.rs
+
+# Database
+*.db

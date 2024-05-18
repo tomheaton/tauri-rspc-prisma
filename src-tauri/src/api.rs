@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 
+use prisma_client_rust::QueryError;
 use rspc::{Config, Router};
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -20,7 +21,19 @@ pub fn create_router() -> Router<Context> {
     })
     .query("posts", |t| {
       return t(|ctx, _: ()| async move {
-        let posts = ctx.db.post().find_many(vec![]).exec().await?;
+        let posts = ctx
+          .db
+          .post()
+          .find_many(vec![])
+          .exec()
+          .await
+          .map_err(|e: QueryError| {
+            rspc::Error::with_cause(
+              rspc::ErrorCode::InternalServerError,
+              "Internal server error occurred while completing database operation!".into(),
+              e,
+            )
+          })?;
 
         return Ok(posts);
       });
@@ -38,7 +51,14 @@ pub fn create_router() -> Router<Context> {
           .post()
           .create(input.title, input.content, vec![])
           .exec()
-          .await?;
+          .await
+          .map_err(|e: QueryError| {
+            rspc::Error::with_cause(
+              rspc::ErrorCode::InternalServerError,
+              "Internal server error occurred while completing database operation!".into(),
+              e,
+            )
+          })?;
 
         return Ok(post);
       });
