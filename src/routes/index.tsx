@@ -1,4 +1,4 @@
-import { api } from "@/main";
+import { api, invalidateQuery } from "@/main";
 import { useState } from "react";
 
 export default function Index() {
@@ -10,14 +10,19 @@ export default function Index() {
 
   const createPostMutation = api.useMutation(["createPost"], {
     onSuccess: () => {
-      console.log("post created");
-      // TODO: add invalidation
+      console.log("Post created!");
+
+      // TODO: add official invalidation
       // api.query.invalidate(["posts"]);
+
+      // NOTE: this is a workaround for invalidating the query
+      invalidateQuery("posts");
+
       setTitle("");
       setContent("");
     },
-    onError: () => {
-      console.log("failed to create post");
+    onError: (e) => {
+      console.error(e);
     },
   });
 
@@ -33,9 +38,7 @@ export default function Index() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-y-4">
       <h1 className="text-5xl font-extrabold tracking-tighter">Tauri + rspc + Prisma</h1>
-      <br />
       <p>Version: {version ?? "undefined"}</p>
-      <br />
       <form className="flex w-full max-w-sm flex-col gap-y-4" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -61,7 +64,6 @@ export default function Index() {
           {createPostMutation.isPending ? "Creating Post..." : "Create Post"}
         </button>
       </form>
-      <br />
       <div className="flex w-full max-w-sm flex-col gap-y-2">
         {posts?.map((post) => (
           <div key={post.id} className="rounded border-2 border-white px-2 py-1">

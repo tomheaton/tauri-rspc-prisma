@@ -13,6 +13,15 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
+const client = createClient<Procedures>({
+  transport: new TauriTransport(),
+});
+const queryClient = new QueryClient();
+
+export function invalidateQuery(queryKey: Procedures["queries"]["key"]) {
+  queryClient.invalidateQueries({ queryKey: [queryKey] });
+}
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Index />}>
@@ -20,11 +29,6 @@ const router = createBrowserRouter(
     </Route>,
   ),
 );
-
-const client = createClient<Procedures>({
-  transport: new TauriTransport(),
-});
-const queryClient = new QueryClient();
 
 export const api = createReactQueryHooks<Procedures>();
 
