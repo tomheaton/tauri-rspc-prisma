@@ -20,12 +20,7 @@ pub fn create_router() -> Router<Context> {
     })
     .query("posts", |t| {
       return t(|ctx, _: ()| async move {
-        let posts = ctx
-          .db
-          .post()
-          .find_many(vec![])
-          .exec()
-          .await?;
+        let posts = ctx.db.post().find_many(vec![]).exec().await?;
 
         return Ok(posts);
       });
