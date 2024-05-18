@@ -26,6 +26,21 @@ export default function Index() {
     },
   });
 
+  const deletePostMutation = api.useMutation(["deletePost"], {
+    onSuccess: () => {
+      console.log("Post deleted!");
+
+      // TODO: add official invalidation
+      // api.query.invalidate(["posts"]);
+
+      // NOTE: this is a workaround for invalidating the query
+      invalidateQuery("posts");
+    },
+    onError: (e) => {
+      console.error(e);
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -61,17 +76,34 @@ export default function Index() {
           className="rounded px-2 py-1 bg-blue-500 text-white"
           disabled={createPostMutation.isPending}
         >
-          {createPostMutation.isPending ? "Creating Post..." : "Create Post"}
+          {createPostMutation.isPending ? "Creating..." : "Create"}
         </button>
       </form>
       <div className="flex w-full max-w-sm flex-col gap-y-2">
         {posts?.map((post) => (
-          <div key={post.id} className="rounded border-2 border-white px-2 py-1">
-            <p className="font-semibold">{post.title}</p>
-            <p>{post.content}</p>
+          <div
+            key={post.id}
+            className="px-2 py-1 flex justify-between items-center rounded border-2 border-white hover:border-blue-500"
+          >
+            <div>
+              <p className="font-semibold">{post.title}</p>
+              <p>{post.content}</p>
+            </div>
+            <div>
+              <button
+                className="rounded px-2 py-1 bg-red-500 text-white"
+                onClick={() =>
+                  deletePostMutation.mutate({
+                    id: post.id,
+                  })
+                }
+              >
+                {deletePostMutation.isPending ? "Deleting..." : "Delete"}
+              </button>
+            </div>
           </div>
         ))}
-        {!posts && <p>No posts found!</p>}
+        {posts?.length === 0 && <p>No posts found!</p>}
       </div>
     </div>
   );

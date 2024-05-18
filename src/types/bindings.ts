@@ -5,10 +5,14 @@ export type Procedures = {
   queries:
     | { key: "posts"; input: never; result: Post[] }
     | { key: "version"; input: never; result: string };
-  mutations: { key: "createPost"; input: CreatePostInput; result: Post };
+  mutations:
+    | { key: "createPost"; input: CreatePostInput; result: Post }
+    | { key: "deletePost"; input: DeletePostInput; result: null };
   subscriptions: never;
 };
 
 export type Post = { id: number; title: string; content: string };
+
+export type DeletePostInput = { id: number };
 
 export type CreatePostInput = { title: string; content: string };

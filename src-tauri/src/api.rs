@@ -5,7 +5,7 @@ use rspc::{Config, Router};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-use crate::Context;
+use crate::{prisma, Context};
 
 pub fn create_router() -> Router<Context> {
   return Router::<Context>::new()
@@ -61,6 +61,30 @@ pub fn create_router() -> Router<Context> {
           })?;
 
         return Ok(post);
+      });
+    })
+    .mutation("deletePost", |t| {
+      #[derive(Debug, Clone, Deserialize, Serialize, Type)]
+      struct DeletePostInput {
+        id: i32,
+      }
+
+      return t(|ctx, input: DeletePostInput| async move {
+        ctx
+          .db
+          .post()
+          .delete(prisma::post::id::equals(input.id))
+          .exec()
+          .await
+          .map_err(|e: QueryError| {
+            rspc::Error::with_cause(
+              rspc::ErrorCode::InternalServerError,
+              "Internal server error occurred while completing database operation!".into(),
+              e,
+            )
+          })?;
+
+        return Ok(());
       });
     })
     .build();
