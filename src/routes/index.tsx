@@ -97,6 +97,7 @@ export default function Index() {
                     id: post.id,
                   })
                 }
+                disabled={deletePostMutation.isPending}
               >
                 {deletePostMutation.isPending ? "Deleting..." : "Delete"}
               </button>
